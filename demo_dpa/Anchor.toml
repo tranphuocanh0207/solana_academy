@@ -1,0 +1,18 @@
+[features]
+seeds = true
+skip-lint = false
+[programs.localnet]
+demo_dpa = "9cT1Kv3vJUzgrtnPKQpBqscUG6mzw6dkYHMSMpuVKA4H"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "/Users/mac/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
+
+[test]
+startup_wait = 10000
