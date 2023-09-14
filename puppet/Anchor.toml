@@ -1,0 +1,16 @@
+[features]
+seeds = false
+skip-lint = false
+[programs.localnet]
+puppet = "DK6uto7p2mWYupWZrC4QWYHpVAHb6TybhX1q22P7aNVU"
+puppet-master = "7xwZVhCfjAiX4vRuS7sgBDeru4qLR9Vi3dv7XQH5hcYM"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "/Users/mac/.config/solana/id.json"
+
+[scripts]
+test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
