@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use anchor_lang::solana_program::program::invoke_signed;
 use anchor_lang::solana_program::system_instruction;
 
-declare_id!("4eXeeKKDqW2e7TYycJ3p8vxK5hqLjkhRRvARcMMGbSWA");
+declare_id!("EjWucgyyFbCmNRavuxxpWFiSjNgb83Hsu1tctNaSe77c");
 
 #[program]
 pub mod transfer_pda_invoke_signed {

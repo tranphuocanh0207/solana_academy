@@ -22,20 +22,20 @@ describe("transfer pda sol", () => {
       [Buffer.from("myseed")],
       program.programId
     );
-    // let latestBlockHash = await provider.connection.getLatestBlockhash();
-    // const signature = await provider.connection.requestAirdrop(
-    //   pda,
-    //   LAMPORTS_PER_SOL
-    // );
-    // await provider.connection.confirmTransaction({
-    //   blockhash: latestBlockHash.blockhash,
-    //   signature: signature,
-    //   lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-    // });
-    // let balancePda = await provider.connection.getBalance(pda);
-    // console.log("balance Pda", balancePda);
-    // let balanceTaker = await provider.connection.getBalance(taker.publicKey);
-    // console.log("balance Taker", balanceTaker);
+    let latestBlockHash = await provider.connection.getLatestBlockhash();
+    const signature = await provider.connection.requestAirdrop(
+      pda,
+      LAMPORTS_PER_SOL
+    );
+    await provider.connection.confirmTransaction({
+      blockhash: latestBlockHash.blockhash,
+      signature: signature,
+      lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+    });
+    let balancePda = await provider.connection.getBalance(pda);
+    console.log("balance Pda", balancePda);
+    let balanceTaker = await provider.connection.getBalance(taker.publicKey);
+    console.log("balance Taker", balanceTaker);
   });
 
   it("Transfer Provider Sol", async () => {
