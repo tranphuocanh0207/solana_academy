@@ -1,10 +1,12 @@
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { R08AnchorMintnft } from "../target/types/r08_anchor_mintnft";
+import { ComputeBudgetProgram} from "@solana/web3.js"
 
 describe("r08_anchor_mintnft", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
+
 
   const program = anchor.workspace
     .R08AnchorMintnft as Program<R08AnchorMintnft>;
@@ -21,7 +23,10 @@ describe("r08_anchor_mintnft", () => {
   const TOKEN_METADATA_PROGRAM_ID = new anchor.web3.PublicKey(
     "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
   );
-
+  const TOKEN_PROGRAM_ID = new anchor.web3.PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA");
+  const ASSOCIATED_TOKEN_PROGRAM_ID = new anchor.web3.PublicKey(
+    "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+  );
   it("Mint!", async () => {
     // Derive the mint address and the associated token account address
 
@@ -57,10 +62,15 @@ describe("r08_anchor_mintnft", () => {
       )
     )[0];
     console.log("Master edition metadata initialized");
-
+    const additionalComputeBudgetInstruction =
+    ComputeBudgetProgram.requestUnits({
+      units: 400000,
+      additionalFee: 0,
+    });
     // Transact with the "mint" function in our on-chain program
-
-    await program.methods
+        try {
+          
+      const tx = await program.methods
       .mint(testNftTitle, testNftSymbol, testNftUri)
       .accounts({
         masterEdition: masterEditionAddress,
@@ -69,8 +79,18 @@ describe("r08_anchor_mintnft", () => {
         tokenAccount: tokenAddress,
         mintAuthority: wallet.publicKey,
         tokenMetadataProgram: TOKEN_METADATA_PROGRAM_ID,
+        systemProgram: anchor.web3.SystemProgram.programId,
+        tokenProgram: TOKEN_PROGRAM_ID,
+        associatedTokenProgram: ASSOCIATED_TOKEN_PROGRAM_ID
       })
-      .signers([mintKeypair])
+      .signers([mintKeypair]).preInstructions([
+        ComputeBudgetProgram.setComputeUnitLimit({ units: 500000 })
+      ])
       .rpc();
+        } catch (error) {
+          console.log(error);
+        }
+  
+    
   });
 });
